@@ -9,7 +9,7 @@ gym.envs.register(
 
     entry_point='gym.envs.classic_control:MountainCarEnv',
 
-    max_episode_steps=100000,      # total number of episodes agent plays during training 
+    max_episode_steps=10000,      # total number of episodes agent plays during training 
     )
 
 env = gym.make('MountainCarMyEasyVersion-v0')
@@ -45,7 +45,7 @@ def observation_to_state(env, observation, number_states):
     return p, v
 
 
-for episode in range(100000):        #single episode
+for episode in range(10000):        #single episode
 
     state = env.reset() #starting state
     timesteps, G, rewards_current_episode = 0,0,0 # initialize 
@@ -105,16 +105,15 @@ for episode in range(100000):        #single episode
     #to see the progress   
     if episode % max_steps_per_episode == 0:   # 100 steps within an episode
         
-        print ('Iteration number' , episode, "Episode finished after ", timesteps, "timesteps.", "acc reward: ", rewards_current_episode)
+        print ('Iteration:' , episode, "Episode terminated after ", timesteps, "steps.", "Accumulated reward: ", rewards_current_episode)
     #Exploration reate decay
     exploration_rate = min_exploration_rate + (max_exploration_rate - min_exploration_rate) * np.exp(-exploration_decay_rate*episode)
 #getting the max values of the q-tables and printing them
 q_max = np.amax(q_table, axis=2)
-plt.imshow(q_max, origin='lower');
+plt.imshow(q_max, origin='lower', label='accumulated reward')
 plt.colorbar()
 plt.show()
 #Printing the best policy
 print (policy)
-#ploting the steps to goal per episode
-plt.plot(steps_to_goal)
+plt.plot(steps_to_goal) #per episode
 plt.show()
